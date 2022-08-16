@@ -1,7 +1,7 @@
 import pandas as pd
 import mplfinance as mpf
 
-stock_file = 'E:\\github\\C3-Data-Science\\backtest\\datas\\stock\\zh_a\\sz002005.csv'
+stock_file = 'E:/github/C3-Data-Science/backtest/datas/stock/zh_a/sz002005.csv'
 
 daily = pd.read_csv(stock_file, index_col=0, parse_dates=True)
 daily = daily.loc[:, ['open', 'close', 'high', 'low', 'volume']]
