@@ -11,7 +11,7 @@ stock_list = os.listdir(data_folder)
 stock_list = [stock for stock in stock_list if stock.startswith('sh') or stock.startswith('sz')]
 train_stocks, test_stocks = split_stocks(stock_list, 50, 200)
 
-test_X, test_Y = build_XY2(data_folder, test_stocks, 400, 3)
+test_X, test_Y = build_XY2(data_folder, test_stocks, 10, 3)
 
 model = load('dt4.joblib')
 predict_Y = model.predict(test_X)
