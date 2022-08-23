@@ -9,12 +9,12 @@ data_folder = 'E:/github/C3-Data-Science/backtest/datas/stock/zh_a'
 
 stock_list = os.listdir(data_folder)
 stock_list = [stock for stock in stock_list if stock.startswith('sh') or stock.startswith('sz')]
-train_stocks, test_stocks = split_stocks(stock_list, 100, 500)
+train_stocks, test_stocks = split_stocks(stock_list, 100, 50)
 
-train_X, train_Y = build_XY(data_folder, train_stocks, 0, 3)
-test_X, test_Y = build_XY(data_folder, test_stocks, 0, 3)
+train_X, train_Y = build_XY(data_folder, train_stocks, 0, 5)
+test_X, test_Y = build_XY(data_folder, test_stocks, 0, 5)
 
-model = tree.DecisionTreeClassifier()
+model = tree.DecisionTreeClassifier(max_depth=3)
 model = model.fit(train_X, train_Y)
 predict_Y = model.predict(test_X)
 
