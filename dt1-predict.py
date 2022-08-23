@@ -3,14 +3,13 @@ import pandas as pd
 from sklearn import tree
 from matplotlib import pyplot as plt
 from joblib import dump, load
-
-# use 10 days to predict the 11th.
+import time
 
 data_folder = 'E:/github/C3-Data-Science/backtest/datas/stock/zh_a'
 
 stock_list = os.listdir(data_folder)
 stock_list = [stock for stock in stock_list if stock.startswith('sh') or stock.startswith('sz')]
-train_stocks, test_stocks = stock_list[0:100], stock_list[1200:1350]
+test_stocks = stock_list[100:150]
 # print(train_stocks)
 # print(test_stocks)
 
@@ -32,23 +31,19 @@ def build_XY(stocks):
 
   return X, Y
 
-train_X, train_Y = build_XY(train_stocks)
 test_X, test_Y = build_XY(test_stocks)
 
-model = tree.DecisionTreeClassifier()
-model = model.fit(train_X, train_Y)
+model = load('dt1.joblib')
 predict_Y = model.predict(test_X)
-
-dump(model, 'dt1.joblib')
 
 same_count = 0
 for i, val in enumerate(predict_Y):
   if val == test_Y[i]:
     same_count += 1
 
-print(f'result: {round(same_count/len(test_Y)*100, 2)}')
-print(f'Test Y: {test_Y}')
-print(f'Predict Y: {predict_Y}')
+print(f'result: {round(same_count/len(test_Y)*100, 2)} %')
+# print(f'Test Y: {test_Y}')
+# print(f'Predict Y: {predict_Y}')
 
 tree.plot_tree(model, fontsize=10)
 plt.show()

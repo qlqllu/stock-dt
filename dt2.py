@@ -4,8 +4,7 @@ from sklearn import tree
 from matplotlib import pyplot as plt
 from joblib import dump, load
 
-# use 10 days to predict the 11th.
-
+# use 5 days to predict the 6th.
 data_folder = 'E:/github/C3-Data-Science/backtest/datas/stock/zh_a'
 
 stock_list = os.listdir(data_folder)
@@ -21,14 +20,14 @@ def build_XY(stocks):
 
     data = pd.read_csv(stock_file, index_col=0, parse_dates=True)
     data = data.loc[:, ['open', 'close', 'high', 'low', 'volume']]
-    data = data.iloc[:12]
+    data = data.iloc[:7]
 
     data['price_change_pct'] = round((data.close - data.close.shift(1)) / data.close.shift(1) * 100, 2)
     data.loc[(data['price_change_pct'] > 0), 'up_down'] = 1
     data.loc[(data['price_change_pct'] <= 0), 'up_down'] = 0
 
-    X.append(data['up_down'][1:11].values)
-    Y.append(data['up_down'][11])
+    X.append(data['up_down'][1:6].values)
+    Y.append(data['up_down'][6])
 
   return X, Y
 
@@ -39,7 +38,7 @@ model = tree.DecisionTreeClassifier()
 model = model.fit(train_X, train_Y)
 predict_Y = model.predict(test_X)
 
-dump(model, 'dt1.joblib')
+dump(model, 'dt2.joblib')
 
 same_count = 0
 for i, val in enumerate(predict_Y):
@@ -47,8 +46,8 @@ for i, val in enumerate(predict_Y):
     same_count += 1
 
 print(f'result: {round(same_count/len(test_Y)*100, 2)}')
-print(f'Test Y: {test_Y}')
-print(f'Predict Y: {predict_Y}')
+# print(f'Test Y: {test_Y}')
+# print(f'Predict Y: {predict_Y}')
 
 tree.plot_tree(model, fontsize=10)
 plt.show()
